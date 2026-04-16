@@ -278,9 +278,9 @@ def build_messages_eval_entity(user_query: str, candidates: list, conversation: 
     - KHÔNG bịa thêm thông tin ngoài dữ liệu candidates
 
     DỮ LIỆU CANDIDATES:
-    \`\`\`json
+    ```json
     ${json.dumps(candidates, ensure_ascii=False)}
-    \`\`\`"""
+    ```"""
 
     messages = [
         {"role": "system", "content": system_prompt},
@@ -319,9 +319,9 @@ def build_messages_eval_entity_relation(user_query: str, candidates: list, conve
     - KHÔNG bịa thêm thông tin ngoài dữ liệu blocks
 
     DỮ LIỆU BLOCKS:
-    \`\`\`json
+    ```json
     ${json.dumps(candidates, ensure_ascii=False)}
-    \`\`\`"""
+    ```"""
 
     messages = [
         {"role": "system", "content": system_prompt},
