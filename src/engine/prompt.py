@@ -279,7 +279,7 @@ def build_messages_eval_entity(user_query: str, candidates: list, conversation: 
 
     DỮ LIỆU CANDIDATES:
     ```json
-    ${json.dumps(candidates, ensure_ascii=False)}
+    {json.dumps(candidates, ensure_ascii=False)}
     ```"""
 
     messages = [
@@ -320,7 +320,7 @@ def build_messages_eval_entity_relation(user_query: str, candidates: list, conve
 
     DỮ LIỆU BLOCKS:
     ```json
-    ${json.dumps(candidates, ensure_ascii=False)}
+    {json.dumps(candidates, ensure_ascii=False)}
     ```"""
 
     messages = [

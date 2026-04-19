@@ -9,6 +9,7 @@ logger = get_logger("__name__")
 
 def parse_json_safe(text):
     try:
+        text = text.strip().strip('```json').strip('```')
         return json.loads(text)
     except Exception:
         logger.error(f"⚠️ Raw output (invalid JSON): {text}")
