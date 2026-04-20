@@ -58,7 +58,7 @@ def entity_to_query_json(entity):
 
 def query_es(entity, batch=10):
     if entity["type"] and entity["info"]:
-        index_name = f"person-idx-fs-prod"
+        index_name = f"{entity["type"].lower()}-idx-fs-prod"
         query_json = entity_to_query_json(entity)
         return execute_elastic_query(index_name, query_json, batch)
     else:
@@ -77,7 +77,7 @@ def ids_to_query_json(ids):
 
 
 def query_es_ids(entity_ids, entity_type):
-    index_name = f"{entity_type}-idx-fs-prod"
+    index_name = f"{entity_type.lower()}-idx-fs-prod"
     query_json = ids_to_query_json(entity_ids)
     return execute_elastic_query(index_name, query_json)
 
