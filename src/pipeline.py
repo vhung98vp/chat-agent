@@ -8,7 +8,7 @@ logger = get_logger(__name__)
 def pipeline_single(pipe_info, user_query, conversation):
     e1 = pipe_info["e1"]
     e1_cands = query_es(e1)
-    return eval_entity(user_query, e1_cands, conversation)
+    return eval_entity(e1_cands, user_query, conversation)
 
 
 def pipeline_multi(pipe_info, user_query, conversation):
@@ -56,23 +56,23 @@ def pipeline_multi(pipe_info, user_query, conversation):
                     })
         
         result.sort(key=lambda x: x["distance"])
-        return eval_entity_relation(user_query, result, conversation)
+        return eval_entity_relation(result, user_query, conversation)
     else:
         if e1_cands:
             source_list, source_type = e1_cands, e1['type']
         else:
             source_list, source_type = e2_cands, e2['type']
         result = source_list
-        return eval_entity(user_query, result, conversation)
+        return eval_entity(result, user_query, conversation)
 
 
 def process_request(user_query: str, context: dict = None, conversation: list = None):
     pipe_info = get_pipeline_info(user_query, context, conversation)
     try:
         if pipe_info["pipeline"] == "P1":
-            return pipeline_single(user_query, conversation, pipe_info)
+            return pipeline_single(pipe_info, user_query, conversation)
         elif pipe_info["pipeline"] == "P2":
-            return pipeline_multi(user_query, conversation, pipe_info)
+            return pipeline_multi(pipe_info, user_query, conversation)
         else:
             raise ValueError("Invalid pipeline type")
     except Exception as e:

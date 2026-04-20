@@ -60,11 +60,11 @@ def get_pipeline_info(user_query: str, context: dict = None, conversation: list 
     return parse_json_safe(raw_output)
 
 
-def eval_entity(user_query: str, candidates: list, conversation: list):
+def eval_entity(candidates: list, user_query: str, conversation: list):
     messages = build_messages_eval_entity(user_query, candidates, conversation)
     return query_vllm(messages, 1024)
 
 
-def eval_entity_relation(user_query: str, candidates: list, conversation: list):
+def eval_entity_relation(candidates: list, user_query: str, conversation: list):
     messages = build_messages_eval_entity_relation(user_query, candidates, conversation)
     return query_vllm(messages, 1024)
