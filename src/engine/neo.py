@@ -34,5 +34,3 @@ def query_neo4j(source_ids, label, n_hops=3):
     except Exception as e:
         print(f"❌ Lỗi: {e}")
         return []
-    finally:
-        driver.close()
