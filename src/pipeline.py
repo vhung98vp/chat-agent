@@ -77,7 +77,7 @@ def pipeline_multi(pipe_info, user_query, conversation):
             for rel in related_items:
                 result.append({
                     "e1": src_lookup[s_id],
-                    "e2": related_map[rel["id"]],
+                    "e2": related_map[str(rel["id"])],
                     "via": "expand",
                     "distance": rel.get("distance", 999),
                     "target": "e2"
