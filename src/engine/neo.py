@@ -2,7 +2,10 @@ from neo4j import GraphDatabase
 from neo4j import GraphDatabase
 from config import NEO4J
 
-driver = GraphDatabase.driver(NEO4J['url'], auth=(NEO4J['user'], NEO4J['password']))
+driver = GraphDatabase.driver(
+    NEO4J['url'], 
+    auth=(NEO4J['user'], NEO4J['password'])
+)
 
 
 def get_related_nodes(tx, node_id, node_label, n_hops):
@@ -21,7 +24,7 @@ def get_related_nodes(tx, node_id, node_label, n_hops):
     return [record.data() for record in result]
 
 
-def query_neo4j(source_ids, label, n_hops=3):
+def query_neo4j(source_ids, label, n_hops=NEO4J['hops']):
     label = label.capitalize()
     try:
         with driver.session() as session:

@@ -108,13 +108,13 @@ OUTPUT FORMAT (STRICT JSON):
                 "e1": {
                     "type": "person",
                     "info": {
-                        "name": "Ngọc Trinh"
+                        "name": "Bùi Anh Tuấn"
                     }
                 },
                 "e2": {
                     "type": "person",
                     "info": {
-                        "name": "Bùi Anh Tuấn"
+                        "name": "Ngọc Trinh"
                     }
                 },
                 "target": "e1"

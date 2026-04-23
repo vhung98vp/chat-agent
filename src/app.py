@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from pipeline import process_request
+from config import LLM
 
 app = FastAPI()
 
@@ -17,7 +18,9 @@ def health_check():
 
 @app.post("/search")
 def route_query(request: QueryRequest):
-    response = process_request(request.query, context=request.context, conversation=request.history)
-    return JSONResponse(content={
-        "data": response
-    })
+    if LLM['stream']:
+        response = process_request(request.query, context=request.context, conversation=request.history)
+        return StreamingResponse(response, media_type="text/plain")
+    else:
+        response = process_request(request.query, context=request.context, conversation=request.history)
+        return JSONResponse(content={ "data": response })

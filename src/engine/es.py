@@ -56,7 +56,7 @@ def entity_to_query_json(entity):
         }
 
 
-def query_es(entity, batch=10):
+def query_es(entity, batch=ES['batch_size']):
     if entity["type"] and entity["info"]:
         index_name = f"{entity["type"].lower()}-idx-fs-prod"
         query_json = entity_to_query_json(entity)

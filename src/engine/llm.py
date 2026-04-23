@@ -34,17 +34,46 @@ def query_vllm(messages, max_tokens=512, stream=False):
             "stream": stream
         }
 
-        response = requests.post(LLM['url'], json=payload)
+        if not stream:
+            response = requests.post(LLM['url'], json=payload)
+            response.raise_for_status()
+            result = response.json()
+            return result["choices"][0]["message"]["content"]
+
+        # Streaming mode
+        response = requests.post(LLM['url'], json=payload, stream=True)
         response.raise_for_status()
 
-        result = response.json()
+        def generate():
+            try:
+                for line in response.iter_lines():
+                    if not line:
+                        continue
 
-        content = result["choices"][0]["message"]["content"]
+                    line = line.decode("utf-8")
 
-        return content
+                    # OpenAI/vLLM streaming format
+                    if line.startswith("data: "):
+                        data = line[len("data: "):]
+
+                        if data == "[DONE]":
+                            break
+
+                        payload = json.loads(data)
+                        delta = payload["choices"][0]["delta"]
+
+                        if "content" in delta:
+                            yield delta["content"]
+
+            except Exception as e:
+                logger.exception(f"Streaming error: {e}")
+                yield f"[ERROR]: {str(e)}"
+
+        return generate()
+
     except Exception as e:
         logger.exception(f"Error querying LLM: {e}")
-        return {}
+        return {} if not stream else iter([])
 
 
 def get_pipeline_info(user_query: str, context: dict = None, conversation: list = None):
@@ -62,9 +91,9 @@ def get_pipeline_info(user_query: str, context: dict = None, conversation: list 
 
 def eval_entity(candidates: list, user_query: str, conversation: list):
     messages = build_messages_eval_entity(user_query, candidates, conversation)
-    return query_vllm(messages, 1024)
+    return query_vllm(messages, LLM['max_tokens'], LLM['stream'])
 
 
 def eval_entity_relation(candidates: list, user_query: str, conversation: list):
     messages = build_messages_eval_entity_relation(user_query, candidates, conversation)
-    return query_vllm(messages, 1024)
+    return query_vllm(messages, LLM['max_tokens'], LLM['stream'])
