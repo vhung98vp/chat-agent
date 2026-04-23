@@ -123,6 +123,28 @@ OUTPUT FORMAT (STRICT JSON):
         },
         {
             "role": "user",
+            "content": "Con trai ông Phạm Minh Chính"
+        },
+        {
+            "role": "assistant",
+            "content": json.dumps({
+                "pipeline": "P1",
+                "e1": {
+                    "type": "person",
+                    "info": {
+                        "role": "con trai",
+                        "src_name": "Phạm Minh Chính"
+                    }
+                },
+                "e2": {
+                    "type": "",
+                    "info": {}
+                },
+                "target": "e1"
+            }, ensure_ascii=False)
+        },
+        {
+            "role": "user",
             "content": "Người tên là Bùi Anh Tuấn và hay đi với Ngọc Trinh"
         },
         {
@@ -245,6 +267,26 @@ OUTPUT FORMAT (STRICT JSON):
                 "e1": {
                     "type": "person",
                     "info": {"role": "Giám đốc", "organization_name": "Viettel"}
+                },
+                "e2": {
+                    "type": "",
+                    "info": {}
+                },
+                "target": "e1"
+            }, ensure_ascii=False)
+        },
+        {
+            "CONVERSATION": [{"role": "user", "content": "Tìm thông tin về ông Phạm Nhật Vượng"}],
+            "role": "user",
+            "content": "Con trai ông này là ai"
+        },
+        {
+            "role": "assistant",
+            "content": json.dumps({
+                "pipeline": "P1",
+                "e1": {
+                    "type": "person",
+                    "info": {"relation": "con trai", "src_name": "Phạm Nhật Vượng"}
                 },
                 "e2": {
                     "type": "",
