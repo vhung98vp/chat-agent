@@ -267,14 +267,14 @@ def build_messages_eval_entity(user_query: str, candidates: list, conversation: 
     NHIỆM VỤ:
     1. Chọn candidate phù hợp nhất với query của user
     2. Trả về thông tin chi tiết của candidate đó (name, label, properties, text)
-    3. Nếu có nhiều candidates trùng tên: tổng hợp thông tin từ tất cả, nêu rõ các nguồn khác nhau
+    3. Nếu có nhiều candidates trùng tên: tổng hợp theo nhóm thông tin khớp, nêu rõ các nguồn khác nhau
 
     QUY TẮC BẮT BUỘC:
     - Nếu query có tên cụ thể (VD: "tìm công ty NCS"): ưu tiên candidates có name match tên đó
     - Trả lời bằng tiếng Việt, ngắn gọn, có cấu trúc
     - Nêu rõ: tên entity (heading) + label + các thông tin quan trọng từ properties
     - Nếu có nhiều kết quả: liệt kê đầy đủ với số thứ tự, sắp xếp theo thời gian gần nhất, hỏi user muốn xem chi tiết cái nào
-    - Nếu không có candidate nào match: "Không tìm thấy thông tin phù hợp"
+    - Nếu không có candidate nào match: "Không tìm thấy thông tin phù hợp. Kiểm tra lại câu hỏi hoặc thử với truy vấn khác."
     - KHÔNG bịa thêm thông tin ngoài dữ liệu candidates
 
     DỮ LIỆU CANDIDATES:
@@ -315,7 +315,7 @@ def build_messages_eval_entity_relation(user_query: str, candidates: list, conve
     - Trả lời bằng tiếng Việt, ngắn gọn, có cấu trúc
     - Nêu rõ: tên entity (heading) + label + thông tin từ properties/text + mối quan hệ với entity còn lại
     - Nếu có nhiều kết quả: liệt kê đầy đủ với số thứ tự, sắp xếp theo thời gian gần nhất, hỏi user muốn xem chi tiết cái nào
-    - Nếu không có block nào match: "Không tìm thấy thông tin phù hợp"
+    - Nếu không có block nào match: "Không tìm thấy thông tin phù hợp. Kiểm tra lại câu hỏi hoặc thử với truy vấn khác."
     - KHÔNG bịa thêm thông tin ngoài dữ liệu blocks
 
     DỮ LIỆU BLOCKS:
