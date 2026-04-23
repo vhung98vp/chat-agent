@@ -20,14 +20,14 @@ def execute_elastic_query(index_name, query_json, batch=10):
         
         hits = response['hits']['hits']
         if not hits:
-            logger.info("Không tìm thấy kết quả nào.")
+            logger.info("No result found.")
             return []
             
         results = [hit['_source'] for hit in hits]
         return results
 
     except Exception as e:
-        logger.info(f"❌ Lỗi khi thực thi query: {e}")
+        logger.error(f"❌ Error executing query: {e}")
     return []
 
 

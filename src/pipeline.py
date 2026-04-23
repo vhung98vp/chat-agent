@@ -76,5 +76,5 @@ def process_request(user_query: str, context: dict = None, conversation: list = 
         else:
             raise ValueError("Invalid pipeline type")
     except Exception as e:
-        logger.exception(f"Lỗi khi xử lý pipeline: {e}")
+        logger.error(f"Error while processing pipeline: {e}")
         return pipe_info

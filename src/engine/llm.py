@@ -72,7 +72,7 @@ def query_vllm(messages, max_tokens=512, stream=False):
         return generate()
 
     except Exception as e:
-        logger.exception(f"Error querying LLM: {e}")
+        logger.error(f"Error querying LLM: {e}")
         return {} if not stream else iter([])
 
 
