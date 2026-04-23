@@ -35,6 +35,7 @@ IMPORTANT:
 - Do NOT invent new pipeline
 - If both conditions match, prioritize:
   two_entities > has_relation > no_relation
+- If has relation_type but doesn't have info of target entity, prioritize single entity with relation_type, source_name and source_info as info field
 - If no_relation, return attributes info in e1
 - Answer json value in vietnamese
 - Output must be valid JSON only.
@@ -192,6 +193,7 @@ IMPORTANT:
 - Do NOT invent new pipeline
 - If both conditions match, prioritize:
   two_entities > has_relation > no_relation
+- If has relation_type but doesn't have info of target entity, prioritize single entity with relation_type, source_name and source_info as info field
 - Answer json value in vietnamese
 - Output must be valid JSON only.
 
