@@ -132,7 +132,7 @@ OUTPUT FORMAT (STRICT JSON):
                 "e1": {
                     "type": "person",
                     "info": {
-                        "role": "con trai",
+                        "relation": "con trai",
                         "src_name": "Phạm Minh Chính"
                     }
                 },
