@@ -1,7 +1,7 @@
 from engine.es import query_es, query_es_ids
 from engine.neo import query_neo4j
 from engine.llm import get_pipeline_info, eval_entity, eval_entity_relation
-from config import get_logger
+from config import get_logger, LLM
 logger = get_logger(__name__)
 
 
@@ -67,7 +67,10 @@ def pipeline_multi(pipe_info, user_query, conversation):
 
 
 def process_request(user_query: str, context: dict = None, conversation: list = None):
+    if conversation:
+        conversation = conversation[-LLM['context_window_limit']:]
     pipe_info = get_pipeline_info(user_query, context, conversation)
+    
     try:
         if pipe_info["pipeline"] == "P1":
             return pipeline_single(pipe_info, user_query, conversation)

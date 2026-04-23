@@ -132,7 +132,7 @@ OUTPUT FORMAT (STRICT JSON):
     return messages
 
 
-def build_messages_pipeline_conversation(user_query: str, context: dict, conversation: list, n_messages=5) -> list:
+def build_messages_pipeline_conversation(user_query: str, context: dict, conversation: list) -> list:
     system_prompt = """
 You are an AI Query Router with conversation awareness.
 
@@ -235,14 +235,11 @@ OUTPUT FORMAT (STRICT JSON):
         system_prompt += f"\n\nCONTEXT:\n{json.dumps(context, ensure_ascii=False)}"
 
     if conversation:
-        system_prompt += f"\n\nCONVERSATION:\n{json.dumps(conversation[-n_messages:], ensure_ascii=False)}"
+        system_prompt += f"\n\nCONVERSATION:\n{json.dumps(conversation, ensure_ascii=False)}"
 
     messages = [
         {"role": "system", "content": system_prompt}
     ]
-
-    # if conversation:
-    #     messages.extend(conversation[-n_messages:])
 
     messages.append({
         "role": "user",
