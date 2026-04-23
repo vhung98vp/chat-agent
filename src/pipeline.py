@@ -84,7 +84,7 @@ def pipeline_multi(pipe_info, user_query, conversation):
                         "distance": rel.get("distance", 999),
                         "target": "e2"
                     })
-
+        logger.info(f"--- Found {len(result)} candidates from {len(related_ids)} ids ---")
         result.sort(key=lambda x: (x["distance"], x["e1"]["id"]))
     return eval_entity_relation(result, user_query, conversation)
 
