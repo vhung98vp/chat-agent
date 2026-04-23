@@ -29,8 +29,8 @@ def pipeline_multi(pipe_info, user_query, conversation):
         e1_ids = list(e1_lookup.keys())
         e2_ids = list(e2_lookup.keys())
 
-        e1_related = query_neo4j(e1_ids, e1['type'], e2['type'])
-        e2_related = query_neo4j(e2_ids, e2['type'], e1['type'])
+        e1_related = query_neo4j(e1_ids, e1['type'], "document")
+        e2_related = query_neo4j(e2_ids, e2['type'], "document")
 
         e1_rel_map = {
             s_id: {node['id']: node for node in related}
