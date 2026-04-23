@@ -55,7 +55,7 @@ def pipeline_multi(pipe_info, user_query, conversation):
                         "target": pipe_info["target"]
                     })
 
-        result.sort(key=lambda x: (x["distance"], x["e1"]))
+        result.sort(key=lambda x: (x["distance"], x[pipe_info["target"]]["id"]))
     else:
         if e1_cands:
             src_list, src_type, t_type = e1_cands, e1['type'], e2['type']
@@ -72,7 +72,6 @@ def pipeline_multi(pipe_info, user_query, conversation):
 
         related_data = query_es_ids(related_ids)
         related_map = { rd["id"]:rd for rd in related_data }
-
         for s_id, related_items in related_list:
             for rel in related_items:
                 result.append({
@@ -83,7 +82,7 @@ def pipeline_multi(pipe_info, user_query, conversation):
                     "target": "e2"
                 })
 
-        result.sort(key=lambda x: (x["distance"], x["e1"]))
+        result.sort(key=lambda x: (x["distance"], x["e1"]["id"]))
     return eval_entity_relation(result, user_query, conversation)
 
 
