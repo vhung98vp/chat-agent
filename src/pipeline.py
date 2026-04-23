@@ -71,8 +71,8 @@ def pipeline_multi(pipe_info, user_query, conversation):
             related_ids.extend([item['id'] for item in related_items])
 
         related_data = query_es_ids(related_ids, t_type)
-        related_map = { rd["id"]: rd for rd in related_data }
-        
+        related_map = { str(rd["id"]): rd for rd in related_data }
+
         for s_id, related_items in related_list:
             for rel in related_items:
                 result.append({
