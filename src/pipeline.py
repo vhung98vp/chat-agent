@@ -54,16 +54,37 @@ def pipeline_multi(pipe_info, user_query, conversation):
                         "distance": rel1[mid_id].get("distance", 999) + rel2[mid_id].get("distance", 999),
                         "target": pipe_info["target"]
                     })
-        
-        result.sort(key=lambda x: (x["distance"], x[pipe_info["target"]]))
-        return eval_entity_relation(result, user_query, conversation)
+
+        result.sort(key=lambda x: (x["distance"], x["e1"]))
     else:
         if e1_cands:
-            source_list, source_type = e1_cands, e1['type']
+            src_list, src_type, t_type = e1_cands, e1['type'], e2['type']
         else:
-            source_list, source_type = e2_cands, e2['type']
-        result = source_list
-        return eval_entity(result, user_query, conversation)
+            src_list, src_type, t_type = e2_cands, e2['type'], e1['type']
+        
+        src_lookup = {item['id']: item for item in src_list}
+        related_list = query_neo4j(src_lookup, src_type, t_type)
+        related_list.sort(key=lambda x: len(x[1]))
+
+        related_ids = []
+        for _, related_items in related_list:
+            related_ids.extend([item['id'] for item in related_items])
+
+        related_data = query_es_ids(related_ids)
+        related_map = { rd["id"]:rd for rd in related_data }
+
+        for s_id, related_items in related_list:
+            for rel in related_items:
+                result.append({
+                    "e1": src_lookup[s_id],
+                    "e2": related_map.get(rel["id"]),
+                    "via": "-",
+                    "distance": rel.get("distance", 999),
+                    "target": "e2"
+                })
+
+        result.sort(key=lambda x: (x["distance"], x["e1"]))
+    return eval_entity_relation(result, user_query, conversation)
 
 
 def process_request(user_query: str, context: dict = None, conversation: list = None):
