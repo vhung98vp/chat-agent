@@ -27,6 +27,7 @@ ES = {
     'user': os.getenv("ES_USER", "elastic"),
     'password': os.getenv("ES_PASSWORD", "password"),
     'batch_size': int(os.getenv("ES_BATCH_SIZE", 10)),
+    'max_batch_size': int(os.getenv("ES_MAX_BATCH_SIZE", 100)),
 }
 
 NEO4J = {

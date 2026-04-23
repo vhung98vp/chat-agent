@@ -79,5 +79,6 @@ def ids_to_query_json(ids):
 def query_es_ids(entity_ids, entity_type):
     index_name = f"{entity_type.lower()}-idx-fs-prod"
     query_json = ids_to_query_json(entity_ids)
-    return execute_elastic_query(index_name, query_json)
+    batch_size = min(ES["max_batch_size"], len(entity_ids))
+    return execute_elastic_query(index_name, query_json, batch_size)
 
