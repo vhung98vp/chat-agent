@@ -1,6 +1,7 @@
 from neo4j import GraphDatabase
 from neo4j import GraphDatabase
-from config import NEO4J
+from config import NEO4J, get_logger
+logger = get_logger(__name__)
 
 driver = GraphDatabase.driver(
     NEO4J['url'], 
@@ -24,16 +25,16 @@ def get_related_nodes(tx, node_id, node_label, n_hops):
     return [record.data() for record in result]
 
 
-def query_neo4j(source_ids, label, n_hops=NEO4J['hops']):
-    label = label.capitalize()
+def query_neo4j(source_ids, source_label, n_hops=NEO4J['hops']):
+    label = source_label.capitalize()
     try:
         with driver.session() as session:
             related_list = []
             for sid in source_ids:
                 related = session.execute_read(get_related_nodes, sid, label, n_hops)
-                print(f"--- Tìm thấy {len(related)} nodes liên quan đến {label} ID: {sid} (max {n_hops} hops) ---")
+                logger.info(f"--- Found {len(related)} related nodes for {label} ID: {sid} (max {n_hops} hops) ---")
                 related_list.append((sid, related))
             return related_list    
     except Exception as e:
-        print(f"❌ Lỗi: {e}")
+        logger.error(f"❌ Error: {e}")
         return []
