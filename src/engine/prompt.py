@@ -1,4 +1,5 @@
 import json
+from config import LLM
 
 
 def build_messages_pipeline_single(user_query: str) -> list:
@@ -280,7 +281,7 @@ def build_messages_eval_entity(user_query: str, candidates: list, conversation: 
     ```"""
 
     messages = [
-        {"role": "system", "content": system_prompt},
+        {"role": "system", "content": system_prompt[:LLM["max_input_length"]]},
         {"role": "user", "content": "Đánh giá các entity và trả về kết quả phù hợp nhất"}
     ]
 
@@ -321,7 +322,7 @@ def build_messages_eval_entity_relation(user_query: str, candidates: list, conve
     ```"""
 
     messages = [
-        {"role": "system", "content": system_prompt},
+        {"role": "system", "content": system_prompt[:LLM["max_input_length"]]},
         {"role": "user", "content": "Đánh giá các entity blocks và trả về kết quả phù hợp nhất"}
     ]
 

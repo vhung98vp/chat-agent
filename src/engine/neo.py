@@ -9,32 +9,33 @@ driver = GraphDatabase.driver(
 )
 
 
-def get_related_nodes(tx, node_id, node_label, n_hops):
+def get_related_nodes(tx, src_id, src_label, dst_label, max_hops):
     # Sử dụng biến p để đại diện cho đường đi, từ đó lấy được length(p) là distance
     query = f"""
-    MATCH p = (start:{node_label} {{id: $id}})-[*1..{n_hops}]-(related)
+    MATCH p = (start:{src_label} {{id: $id}})-[*1..{max_hops}]-(related:{dst_label})
     WHERE start <> related
     RETURN DISTINCT 
         related.id AS id, 
         labels(related) AS labels, 
         length(p) AS distance
     ORDER BY distance ASC
-    LIMIT 200
+    LIMIT {NEO4J['max_items']}
     """
-    result = tx.run(query, id=node_id)
+    result = tx.run(query, id=src_id)
     return [record.data() for record in result]
 
 
-def query_neo4j(source_ids, source_label, n_hops=NEO4J['hops']):
-    label = source_label.capitalize()
+def query_neo4j(src_ids, src_label, dst_label, max_hops=NEO4J['max_hops']):
+    src_label = src_label.capitalize()
+    dst_label = dst_label.capitalize()
     try:
         with driver.session() as session:
             related_list = []
-            for sid in source_ids:
-                related = session.execute_read(get_related_nodes, sid, label, n_hops)
-                logger.info(f"--- Found {len(related)} related nodes for {label} ID: {sid} (max {n_hops} hops) ---")
+            for sid in src_ids:
+                related = session.execute_read(get_related_nodes, sid, src_label, dst_label, max_hops)
+                logger.info(f"--- Found {len(related)} related nodes for {src_label} ID: {sid} (max {max_hops} hops) ---")
                 related_list.append((sid, related))
             return related_list    
     except Exception as e:
-        logger.error(f"❌ Error finding related nodes: {e}")
+        logger.error(f"❌ Error querying neo4j: {e}")
         return []

@@ -19,6 +19,7 @@ LLM = {
     'max_tokens': int(os.getenv("LLM_RESPONSE_MAX_TOKENS", 1024)),
     'stream': os.getenv("LLM_RESPONSE_STREAM", "false").lower() == "true",
     'context_window_limit': int(os.getenv("LLM_CONTEXT_WINDOW_LIMIT", 5)),
+    'max_input_length': int(os.getenv("LLM_MAX_INPUT_LENGTH", 28000)),
 }
 
 ES = {
@@ -32,5 +33,6 @@ NEO4J = {
     'url': os.getenv("NEO4J_URL", "bolt://localhost:7687"),
     'user': os.getenv("NEO4J_USER", "neo4j"),
     'password': os.getenv("NEO4J_PASSWORD", "password"),
-    'hops': int(os.getenv("NEO4J_HOPS", 3)),
+    'max_hops': int(os.getenv("NEO4J_MAX_HOPS", 5)),
+    'max_items': int(os.getenv("NEO4J_MAX_ITEMS", 100)),
 }

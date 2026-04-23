@@ -55,7 +55,7 @@ def pipeline_multi(pipe_info, user_query, conversation):
                         "target": pipe_info["target"]
                     })
         
-        result.sort(key=lambda x: x["distance"])
+        result.sort(key=lambda x: (x["distance"], x[pipe_info["target"]]))
         return eval_entity_relation(result, user_query, conversation)
     else:
         if e1_cands:
