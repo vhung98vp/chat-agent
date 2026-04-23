@@ -29,8 +29,8 @@ def pipeline_multi(pipe_info, user_query, conversation):
         e1_ids = list(e1_lookup.keys())
         e2_ids = list(e2_lookup.keys())
 
-        e1_related = query_neo4j(e1_ids, e1['type'])
-        e2_related = query_neo4j(e2_ids, e2['type'])
+        e1_related = query_neo4j(e1_ids, e1['type'], e2['type'])
+        e2_related = query_neo4j(e2_ids, e2['type'], e1['type'])
 
         e1_rel_map = {
             s_id: {node['id']: node for node in related}
@@ -70,7 +70,7 @@ def process_request(user_query: str, context: dict = None, conversation: list = 
     if conversation:
         conversation = conversation[-LLM['context_window_limit']:]
     pipe_info = get_pipeline_info(user_query, context, conversation)
-    
+
     try:
         if pipe_info["pipeline"] == "P1":
             return pipeline_single(pipe_info, user_query, conversation)
