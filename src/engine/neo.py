@@ -36,5 +36,5 @@ def query_neo4j(source_ids, source_label, n_hops=NEO4J['hops']):
                 related_list.append((sid, related))
             return related_list    
     except Exception as e:
-        logger.error(f"❌ Error: {e}")
+        logger.error(f"❌ Error finding related nodes: {e}")
         return []
