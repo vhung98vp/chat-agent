@@ -88,7 +88,7 @@ OUTPUT FORMAT (STRICT JSON):
                 "e1": {
                     "type": "organization",
                     "info": {
-                        "name": "công ty FPT"
+                        "name": "FPT"
                     }
                 },
                 "e2": {
@@ -96,6 +96,28 @@ OUTPUT FORMAT (STRICT JSON):
                     "info": {}
                 },
                 "target": "e2"
+            }, ensure_ascii=False)
+        },
+        {
+            "role": "user",
+            "content": "Chủ tịch của công ty CMC"
+        },
+        {
+            "role": "assistant",
+            "content": json.dumps({
+                "pipeline": "P1",
+                "e1": {
+                    "type": "person",
+                    "info": {
+                        "role": "chủ tịch",
+                        "organization_name": "CMC"
+                    }
+                },
+                "e2": {
+                    "type": "",
+                    "info": {}
+                },
+                "target": "e1"
             }, ensure_ascii=False)
         },
         {
@@ -210,6 +232,26 @@ OUTPUT FORMAT (STRICT JSON):
             }, ensure_ascii=False)
         },
         {
+            "CONVERSATION": [{"role": "user", "content": "Tìm thông tin về công ty Viettel"}],
+            "role": "user",
+            "content": "Giám đốc của công ty này là ai"
+        },
+        {
+            "role": "assistant",
+            "content": json.dumps({
+                "pipeline": "P1",
+                "e1": {
+                    "type": "person",
+                    "info": {"role": "Giám đốc", "organization_name": "Viettel"}
+                },
+                "e2": {
+                    "type": "",
+                    "info": {}
+                },
+                "target": "e1"
+            }, ensure_ascii=False)
+        },
+        {
             "CONVERSATION": [{"role": "user", "content": "Tìm người tên là Văn Thành sống ở Cầu Giấy"}],
             "role": "user",
             "content": "Người này sinh năm 2002"
@@ -265,7 +307,7 @@ def build_messages_eval_entity(user_query: str, candidates: list, conversation: 
     NHIỆM VỤ:
     1. Chọn candidate phù hợp nhất với query của user
     2. Trả về thông tin chi tiết của candidate đó (name, label, properties, text)
-    3. Nếu có nhiều candidates trùng tên: tổng hợp thành các nhóm theo tên và 2-3 thuộc tính quan trọng nhất để phân biệt, sắp xếp theo mức độ phổ biến và nêu rõ nguồn thông tin
+    3. Nếu có nhiều candidates phù hợp: tổng hợp thành các nhóm theo tên và 2-3 thuộc tính quan trọng nhất để phân biệt, sắp xếp theo mức độ phổ biến và nêu rõ nguồn thông tin
 
     QUY TẮC BẮT BUỘC:
     - Nếu query có tên cụ thể (VD: "tìm công ty NCS"): ưu tiên candidates có name match tên đó
@@ -296,7 +338,7 @@ def build_messages_eval_entity_relation(user_query: str, candidates: list, conve
     NGỮ CẢNH: {conversation_text} User hỏi: "{user_query}"
 
     DỮ LIỆU: Agent trả về {len(candidates)} khối entity pairs có quan hệ trong graph:
-    - Mỗi khối có: e1 (entity 1), e2 (entity 2), via (ID cạnh quan hệ), distance (khoảng cách), target (entity user muốn)
+    - Mỗi khối có: e1 (entity 1), e2 (entity 2), via (ID doc liên kết), distance (khoảng cách), target (entity user muốn)
     - Mỗi entity có: name, label (Person/Organization), title, text, properties (thông tin chi tiết)
     - distance càng NHỎ = 2 entities càng GẦN nhau trong graph = match TỐT hơn
     - target chỉ định entity nào là kết quả user cần tìm (e1 hoặc e2)
