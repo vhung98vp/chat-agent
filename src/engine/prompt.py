@@ -264,7 +264,7 @@ def build_messages_eval_entity(user_query: str, candidates: list, conversation: 
     NHIỆM VỤ:
     1. Chọn candidate phù hợp nhất với query của user
     2. Trả về thông tin chi tiết của candidate đó (name, label, properties, text)
-    3. Nếu có nhiều candidates trùng tên: tổng hợp thành các nhóm theo tên và 1-3 thuộc tính quan trọng nhất để phân biệt, sắp xếp theo mức độ phổ biến và nêu rõ nguồn thông tin
+    3. Nếu có nhiều candidates trùng tên: tổng hợp thành các nhóm theo tên và 2-3 thuộc tính quan trọng nhất để phân biệt, sắp xếp theo mức độ phổ biến và nêu rõ nguồn thông tin
 
     QUY TẮC BẮT BUỘC:
     - Nếu query có tên cụ thể (VD: "tìm công ty NCS"): ưu tiên candidates có name match tên đó
