@@ -20,6 +20,7 @@ LLM = {
     'stream': os.getenv("LLM_RESPONSE_STREAM", "false").lower() == "true",
     'context_window_limit': int(os.getenv("LLM_CONTEXT_WINDOW_LIMIT", 5)),
     'max_input_length': int(os.getenv("LLM_MAX_INPUT_LENGTH", 28000)),
+    'explain_result': os.getenv("LLM_EXPLAIN_RESULT", "false").lower() == "true",
 }
 
 ES = {

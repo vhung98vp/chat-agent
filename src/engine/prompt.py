@@ -338,6 +338,7 @@ OUTPUT FORMAT (STRICT JSON):
 
 def build_messages_eval_entity(user_query: str, candidates: list, conversation: list) -> list:
     conversation_text = f"\n- Cuộc hội thoại: {json.dumps(conversation, ensure_ascii=False)} \n - " if conversation else ""
+    explain_instruction = "- Giải thích lý do chọn candidate dựa trên các thuộc tính và ngữ cảnh" if LLM['explain_result'] else "- Không giải thích lý do lựa chọn, chỉ trả về kết quả phù hợp nhất"
 
     system_prompt = f"""Bạn là trợ lý tra cứu thông tin từ dữ liệu graph.
 
@@ -360,6 +361,7 @@ def build_messages_eval_entity(user_query: str, candidates: list, conversation: 
     - Nếu có nhiều kết quả: liệt kê đầy đủ với số thứ tự, sắp xếp theo mức độ trùng khớp và thời gian gần nhất, hỏi user muốn xem chi tiết cái nào
     - Nếu không có candidate nào match: "Không tìm thấy thông tin phù hợp. Kiểm tra lại câu hỏi hoặc thử với truy vấn khác."
     - KHÔNG bịa thêm thông tin ngoài dữ liệu candidates
+    {explain_instruction}
 
     DỮ LIỆU CANDIDATES:
     ```json
@@ -376,6 +378,7 @@ def build_messages_eval_entity(user_query: str, candidates: list, conversation: 
 
 def build_messages_eval_entity_relation(user_query: str, candidates: list, conversation) -> list:
     conversation_text = f"\n- Cuộc hội thoại: {json.dumps(conversation, ensure_ascii=False)} \n - " if conversation else ""
+    explain_instruction = "- Giải thích lý do chọn block dựa trên các thuộc tính và ngữ cảnh" if LLM['explain_result'] else "- Không giải thích lý do lựa chọn, chỉ trả về kết quả phù hợp nhất"
 
     system_prompt = f"""Bạn là trợ lý tra cứu thông tin từ dữ liệu graph.
 
@@ -401,6 +404,7 @@ def build_messages_eval_entity_relation(user_query: str, candidates: list, conve
     - Nếu có nhiều kết quả: liệt kê đầy đủ với số thứ tự, sắp xếp theo thời gian gần nhất, hỏi user muốn xem chi tiết cái nào
     - Nếu không có block nào match: "Không tìm thấy thông tin phù hợp. Kiểm tra lại câu hỏi hoặc thử với truy vấn khác."
     - KHÔNG bịa thêm thông tin ngoài dữ liệu blocks
+    {explain_instruction}
 
     DỮ LIỆU BLOCKS:
     ```json
