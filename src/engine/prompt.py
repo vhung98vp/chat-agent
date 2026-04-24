@@ -132,7 +132,7 @@ OUTPUT FORMAT (STRICT JSON):
                 "e1": {
                     "type": "person",
                     "info": {
-                        "relation": "con trai",
+                        "relation_type": "con trai",
                         "src_name": "Phạm Minh Chính"
                     }
                 },
@@ -286,7 +286,7 @@ OUTPUT FORMAT (STRICT JSON):
                 "pipeline": "P1",
                 "e1": {
                     "type": "person",
-                    "info": {"relation": "con trai", "src_name": "Phạm Nhật Vượng"}
+                    "info": {"relation_type": "con trai", "src_name": "Phạm Nhật Vượng"}
                 },
                 "e2": {
                     "type": "",

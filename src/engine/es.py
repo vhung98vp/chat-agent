@@ -43,6 +43,17 @@ def entity_to_query_json(entity):
             }
             
         }
+    elif entity["info"].get("relation_type") and entity["info"].get("src_name"):
+        text_query = " ".join(str(v) for k, v in entity["info"].items() if k not in ["relation_type", "src_name"])
+        return {
+            "query": {
+                "bool": {
+                    "must": [{"match": {"text": entity["info"]["relation_type"]}},
+                             {"match": {"text": entity["info"]["src_name"]}}],
+                    "should": [{"match": {"text": {"query": text_query, "boost": 2.0}}}]
+                }
+            }
+        }
     else:
         return {
             "query": {
